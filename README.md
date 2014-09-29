@@ -37,7 +37,8 @@ __Syntax :__ atop -r ATOP_LOG_FILE -b hh:mm
 
 _issue.net_ is just your login banner to warn user about their access.
 
-**Licence**
+**License**
 --------------
 Please read and uderstand MIT Licence before use this script :
+
 https://github.com/o-be-one/git-deploy-linux/blob/master/LICENSE
