@@ -31,6 +31,7 @@ It will deploys to all users.
 ### atop
 
 _atop_ is awesome to monitore your server. Every 5 minutes, it will take a shot of your system stats. You'll be able to navigate in it very easily, like if it was in realtime.
+
 __Syntax :__ atop -r ATOP_LOG_FILE -b hh:mm
 
 ### issue.net
