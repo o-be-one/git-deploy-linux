@@ -3,6 +3,7 @@
 #########
 # Author : Meddy "o_be_one" Brai
 # Creation date : 31/07/2014
+# Source : https://github.com/o-be-one/git-deploy-linux
 #
 # Goal : Deploy or update main configurations of a server running Linux Ubuntu or Debian.
 # Syntax : ./mep-git.sh
