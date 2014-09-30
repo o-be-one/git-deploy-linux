@@ -98,7 +98,7 @@ then
     PKG_OK=$(dpkg-query -W --showformat='${Status}\n' git-core|grep "install ok installed")
     if [ "" == "$PKG_OK" ]; then
         log_warning_msg "git isn't installed. Starting installation ..."
-        sudo apt-get --force-yes --yes install git-core
+        apt-get --force-yes --yes install git-core
     fi
    
     # Clone the repositery
@@ -146,7 +146,7 @@ then
       PKG_OK=$(dpkg-query -W --showformat='${Status}\n' bc|grep "install ok installed")
       if [ "" == "$PKG_OK" ]; then
          log_warning_msg "bc isn't installed. Starting installation ..."
-         sudo apt-get --force-yes --yes install bc
+         apt-get --force-yes --yes install bc
       fi
 
       cp $TMPFOLDER/.bashrc /etc/skel
@@ -164,7 +164,7 @@ then
       PKG_OK=$(dpkg-query -W --showformat='${Status}\n' vim|grep "install ok installed")
       if [ "" == "$PKG_OK" ]; then
          log_warning_msg "vim is not installed. Install is starting ..."
-         sudo apt-get --force-yes --yes install vim
+         apt-get --force-yes --yes install vim
       fi
       
       if [[ $VIMRC == "2" ]]
@@ -221,7 +221,7 @@ then
       PKG_OK=$(dpkg-query -W --showformat='${Status}\n' atop|grep "install ok installed")
       if [ "" == "$PKG_OK" ]; then
          log_warning_msg "atop is not installed. Install is starting ..."
-         sudo apt-get --force-yes --yes install atop
+         apt-get --force-yes --yes install atop
       fi
       cp $TMPFOLDER/atop /etc/logrotate.d/atop
       sed -i -e 's/600/300/g' /etc/init.d/atop
