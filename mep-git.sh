@@ -141,6 +141,14 @@ then
     ##### Where to deploy files ?
     ## .bashrc
    if [[ $UPDT == *1* ]]; then
+
+      # bc is used by my bashrc header ...
+      PKG_OK=$(dpkg-query -W --showformat='${Status}\n' bc|grep "install ok installed")
+      if [ "" == "$PKG_OK" ]; then
+         log_warning_msg "bc isn't installed. Starting installation ..."
+         sudo apt-get --force-yes --yes install bc
+      fi
+
       cp $TMPFOLDER/.bashrc /etc/skel
       cp $TMPFOLDER/.bashrc /root/
       for i in `ls /home/`; do cp $TMPFOLDER/.bashrc /home/$i; done
