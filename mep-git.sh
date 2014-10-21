@@ -44,7 +44,7 @@ if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
 then
 
     # What to do ? You can use 0 to 9, a to z and A to Z.
-    echo -e "Que souhaitez-vous installer ou mettre à jour ? [all]"
+    echo -e "What to setup or update ? [all]"
     echo -e "1 - .bashrc\n2 - .vimrc\n3 - atop\n4 - Login banner\n5 - Bash issue fix\nall - Do all"
     read UPDT
     echo
