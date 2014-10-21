@@ -12,6 +12,7 @@
 # Please edit following :
 
 GITREPO="github.com/o-be-one/git-deploy-linux.git" # github repositery to use
+GITSSH="git@github.com:o-be-one/git-deploy-linux.git" # adresse SSH du dépôt ?
 TMPFOLDER="/tmp/mep-git" # temp folder wheres to work
 
 ######
@@ -106,8 +107,15 @@ then
     do
    
         echo
-        log_warning_msg "Login failed ... Please try again."
-        echo
+        echo "Error ... Try with SSH (server SSH key must be on your GitHub account) ? [y/N]"
+        read GOGO
+      
+        if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
+        then
+      
+            git clone $GITSSH $TMPFOLDER
+      
+        fi
 
     done
    
