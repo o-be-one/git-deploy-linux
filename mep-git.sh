@@ -241,6 +241,7 @@ then
    if [[ $UPDT == *4* ]]; then
       cp $TMPFOLDER/issue.net /etc/issue.net
       sed -i -e 's/#Banner/Banner/g' /etc/ssh/sshd_config
+      service ssh restart
       log_daemon_msg "Login banner update"
       log_end_msg 0
    fi
