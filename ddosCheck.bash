@@ -3,7 +3,7 @@
 ############
 # License : MIT
 # Author : Meddy "o_be_one" Brai for OVH Anti-DDoS team (T : @o_b)
-# Version : 0.2
+# Version : 1.1.2
 # Date : 2015-11-12
 # Goal : start a TCPDump if there is a DDoS
 # HowTo : use it as root, edit vars, set cronjob
@@ -12,7 +12,7 @@
 
 ### Setup (you can let it by default)
 FILENAME="capture-ovh" # name of the file prefix. Suffix will be, by default, .DATE (here capture-ovh.2015-11-10)
-TCPFOLDER="/home/o_be_one/ddos-attempt" # where to store TCPDump files
+TCPFOLDER="/root/ddos-attempt" # where to store TCPDump files
 LASTTIME=10 # set time in minute to tcpdump after the last tcpdump
 TRYSITE="google.com duckduckgo.com r0x.fr ovh.com" # domains to try (more you add, more time it takes to check ...)
 COUNT=3 # number of pings to check each TRYSITE (useful to get relevant ping average)
@@ -39,7 +39,7 @@ fi
 mkdir -p $TCPFOLDER
 
 # stop if we have a file before $LASTTIME defined
-if test "`find $TCPFOLDER/$FILENAME* -mmin -$LASTTIME`"; then
+if test "`find $TCPFOLDER/$FILENAME* -mmin -$LASTTIME 2>/dev/null`"; then
         exit 0
 fi
 
@@ -60,4 +60,4 @@ do
 done
 
 # start TCPCMD if we have more timeout than MAXFAIL
-[[ $failcount -ge $MAXFAIL ]] && $TCPCMD
+[[ $failcount -ge $MAXFAIL ]] && $TCPCMD 2>/dev/null
