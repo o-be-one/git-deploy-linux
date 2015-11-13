@@ -35,6 +35,13 @@ if [[ $EUID -ne 0 ]]; then
         exit 1
 fi
 
+# check if tcpdump is installed
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' tcpdump|grep "install ok installed")
+if [ "" == "$PKG_OK" ]; then
+        log_warning_msg "tcpdump is nt installed. Starting installation ..."
+        apt-get --force-yes --yes install tcpdump
+fi
+
 # make the folder even if it already exists (cause no error)
 mkdir -p $TCPFOLDER
 
@@ -47,11 +54,15 @@ fi
 for myHost in $TRYSITE
 do
         getping=$(ping -c $COUNT $myHost)
+        pingreturn=$?
         count=$(echo "$getping" | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
         avglat=$(echo "$getping" | grep 'rtt ' | awk -F'/' '{ print $5 }')
         avglat=${avglat/.*}
+        # check if host is known
+        if [ $pingreturn -eq 2 ]; then
+                let failcount++
         # check if ping timeout
-        if [ $count -eq 0 ]; then
+        elif [ $count -eq 0 ]; then
                 let failcount++
         # if no timeout, check latency
         elif [ $avglat -gt $LAT ]; then
