@@ -53,7 +53,7 @@ fi
 # check pings for all TRYSITE
 for myHost in $TRYSITE
 do
-        getping=$(ping -c $COUNT $myHost)
+        getping=$(ping -c $COUNT $myHost 2>1)
         pingreturn=$?
         count=$(echo "$getping" | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
         avglat=$(echo "$getping" | grep 'rtt ' | awk -F'/' '{ print $5 }')
