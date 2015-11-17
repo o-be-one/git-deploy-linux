@@ -3,7 +3,7 @@
 ############
 # License : MIT
 # Author : Meddy "o_be_one" Brai for OVH Anti-DDoS team (T : @o_b)
-# Version : 1.1.2
+# Version : 1.1.3
 # Date : 2015-11-12
 # Goal : start a TCPDump if there is a DDoS
 # HowTo : use it as root, edit vars, set cronjob
@@ -16,7 +16,7 @@ TCPFOLDER="/root/ddos-attempt" # where to store TCPDump files
 LASTTIME=10 # set time in minute to tcpdump after the last tcpdump
 TRYSITE="google.com duckduckgo.com r0x.fr ovh.com" # domains to try (more you add, more time it takes to check ...)
 COUNT=3 # number of pings to check each TRYSITE (useful to get relevant ping average)
-LAT=200 # max latency before considering timeout
+LAT=150 # max latency before considering timeout
 MAXFAIL=3 # number of fails before tcpdump (max number is the number of defined TRYSITE, by defaut 4)
 DATE=$(date +'%y-%m-%d_%H-%M-%S') # date format for saved files
 TCPCMD="tcpdump -w $TCPFOLDER/$FILENAME.$DATE -c 100000 port not ssh" # command to TCPDump (dont forget to keep $TCPFOLDER/$FILENAME.$DATE)
@@ -53,7 +53,7 @@ fi
 # check pings for all TRYSITE
 for myHost in $TRYSITE
 do
-        getping=$(ping -c $COUNT $myHost 2>1)
+        getping=$(ping -c $COUNT $myHost 2>/dev/null)
         pingreturn=$?
         count=$(echo "$getping" | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
         avglat=$(echo "$getping" | grep 'rtt ' | awk -F'/' '{ print $5 }')
