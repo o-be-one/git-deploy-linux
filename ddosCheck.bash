@@ -3,7 +3,7 @@
 ############
 # License : MIT
 # Author : Meddy "o_be_one" Brai for OVH Anti-DDoS team (T : @o_b)
-# Version : 1.2
+# Version : 1.2.1
 # Date : 2015-11-12
 # Goal : start a TCPDump if there is a DDoS
 # HowTo : use it as root, edit vars, set cronjob
@@ -81,7 +81,16 @@ do
 done
 
 # start TCPCMD if we have more timeout than MAXFAIL
-[[ $failcount -ge $MAXFAIL ]] && $TCPCMD 2>/dev/null
+if [ $failcount -ge $MAXFAIL ]; then
+        $TCPCMD 2>/dev/null
+        log_daemon_msg "DDoS is recorded in $TCPFOLDER/$FILENAME.$DATE"
+        log_end_msg 0
+fi
 
 # remove lock-file when script is ended
 rm $TCPFOLDER/.ddosCheck.lck
+
+# tell that checked is done
+log_daemon_msg "The DDoS check has successfully ended"
+log_end_msg 0
+exit 0
