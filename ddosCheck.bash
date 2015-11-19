@@ -19,7 +19,7 @@ COUNT=3 # number of pings to check each TRYSITE (useful to get relevant ping ave
 LAT=150 # max latency before considering timeout
 MAXFAIL=3 # number of fails before tcpdump (max number is the number of defined TRYSITE, by defaut 4)
 DATE=$(date +'%y-%m-%d_%H-%M-%S') # date format for saved files
-TCPCMD="tcpdump -w $TCPFOLDER/$FILENAME.$DATE -c 100000 port not ssh" # command to TCPDump (dont forget to keep $TCPFOLDER/$FILENAME.$DATE)
+TCPCMD="/usr/sbin/tcpdump -w $TCPFOLDER/$FILENAME.$DATE -c 100000 port not ssh" # command to TCPDump (dont forget to keep $TCPFOLDER/$FILENAME.$DATE)
 
 ### Script, edit it at your own risks
 # load init functions
