@@ -3,7 +3,7 @@
 ############
 # License : MIT
 # Author : Meddy "o_be_one" Brai for OVH Anti-DDoS team (T : @o_b)
-# Version : 1.2.1
+# Version : 1.2.2
 # Date : 2015-11-12
 # Goal : start a TCPDump if there is a DDoS
 # HowTo : use it as root, edit vars, set cronjob
@@ -54,7 +54,9 @@ mkdir -p $TCPFOLDER
 
 # stop if we have a file before $LASTTIME defined
 if test "`find $TCPFOLDER/$FILENAME* -mmin -$LASTTIME 2>/dev/null`"; then
-        exit 0
+        log_daemon_msg "A TCPDUMP was already made before $LASTTIME minutes ago"
+        log_end_msg 3
+        exit 3
 fi
 
 # create lock-file
