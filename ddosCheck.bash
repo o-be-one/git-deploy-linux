@@ -85,8 +85,3 @@ done
 
 # remove lock-file when script is ended
 rm $TCPFOLDER/.ddosCheck.lck
-
-# log all success
-log_daemon_msg "TCPDUMP succesfully recorded"
-log_end_msg 0
-exit 0
