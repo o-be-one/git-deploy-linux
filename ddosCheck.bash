@@ -3,7 +3,7 @@
 ############
 # License : MIT
 # Author : Meddy "o_be_one" Brai for OVH Anti-DDoS team (T : @o_b)
-# Version : 1.1.3
+# Version : 1.2
 # Date : 2015-11-12
 # Goal : start a TCPDump if there is a DDoS
 # HowTo : use it as root, edit vars, set cronjob
@@ -30,9 +30,16 @@ failcount=0
 
 # check if root
 if [[ $EUID -ne 0 ]]; then
-        log_daemon_msg "This script must be run as root" 1>&2
+        log_daemon_msg "This script must be run as root"
         log_end_msg 1
         exit 1
+fi
+
+# check if lock-file exists
+if [ -e $TCPFOLDER/.ddosCheck.lck ]; then
+        log_daemon_msg "Script is already running on PID `cat $TCPFOLDER/.ddosCheck.lck` ..."
+        log_end_msg 2
+        exit 2
 fi
 
 # check if tcpdump is installed
@@ -49,6 +56,9 @@ mkdir -p $TCPFOLDER
 if test "`find $TCPFOLDER/$FILENAME* -mmin -$LASTTIME 2>/dev/null`"; then
         exit 0
 fi
+
+# create lock-file
+echo $$ > $TCPFOLDER/.ddosCheck.lck
 
 # check pings for all TRYSITE
 for myHost in $TRYSITE
@@ -72,3 +82,11 @@ done
 
 # start TCPCMD if we have more timeout than MAXFAIL
 [[ $failcount -ge $MAXFAIL ]] && $TCPCMD 2>/dev/null
+
+# remove lock-file when script is ended
+rm $TCPFOLDER/.ddosCheck.lck
+
+# log all success
+log_daemon_msg "TCPDUMP succesfully recorded"
+log_end_msg 0
+exit 0
