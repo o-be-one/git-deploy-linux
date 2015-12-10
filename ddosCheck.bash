@@ -84,9 +84,8 @@ done
 
 # start TCPCMD if we have more timeout than MAXFAIL
 if [ $failcount -ge $MAXFAIL ]; then
+        log_warning_msg "DDoS detected ! Recording in $TCPFOLDER/$FILENAME.$DATE"
         $TCPCMD 2>/dev/null
-        log_daemon_msg "DDoS is recorded in $TCPFOLDER/$FILENAME.$DATE"
-        log_end_msg 0
 fi
 
 # remove lock-file when script is ended
