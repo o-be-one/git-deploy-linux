@@ -17,7 +17,7 @@ LASTTIME=10 # set time in minute to tcpdump after the last tcpdump
 TRYSITE="google.com duckduckgo.com r0x.fr ovh.com" # domains to try (more you add, more time it takes to check ...)
 COUNT=3 # number of pings to check each TRYSITE (useful to get relevant ping average)
 LAT=150 # max latency before considering timeout
-MAXFAIL=3 # number of fails before tcpdump (max number is the number of defined TRYSITE, by defaut 4)
+MAXFAIL=3 # number of fails before tcpdump (max number is the number of defined TRYSITE, by defaut 3)
 DATE=$(date +'%y-%m-%d_%H-%M-%S') # date format for saved files
 TCPCMD="/usr/sbin/tcpdump -w $TCPFOLDER/$FILENAME.$DATE -c 100000 port not ssh" # command to TCPDump (dont forget to keep $TCPFOLDER/$FILENAME.$DATE)
 
