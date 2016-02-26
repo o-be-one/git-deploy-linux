@@ -14,6 +14,9 @@ HISTCONTROL=ignoreboth
 HISTSIZE=10000
 # History timestamp
 HISTTIMEFORMAT="%Y-%m-%d @ %T - "
+# Load caracter encoding
+export LC_ALL="fr_FR.UTF-8"
+export LANG="$LC_ALL"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
