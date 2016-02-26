@@ -45,7 +45,15 @@ then
 
     # What to do ? You can use 0 to 9, a to z and A to Z.
     echo -e "What to setup or update ? [all]"
-    echo -e "1 - .bashrc\n2 - .vimrc\n3 - atop\n4 - Login banner\n5 - Bash issue fix\nall - Do all"
+    echo -e "\
+ 1 - .bashrc for all users\n \
+2 - .vimrc for all users\n \
+3 - atop monitoring (edit /etc/init.d/atop after\n \
+4 - Login banner (you can edit /etc/issue.net)\n \
+5 - Bash issue fix\n \
+6 - ddosCheck script (you'll had to conf and add it in cron)\n \
+all - Do all \
+    "
     read UPDT
     echo
    
@@ -122,7 +130,7 @@ then
         echo
    
     # Check updates
-    diff --brief <(sort $TMPFOLDER/mep-git.sh) <(sort $DESTSCRIPT/$SCRIPT) >/dev/null
+    diff --brief <(sort $TMPFOLDER/$SCRIPT) <(sort $DESTSCRIPT/$SCRIPT) >/dev/null
     comp_value=$?
  
     if [ $comp_value -eq 1 ]
@@ -134,7 +142,7 @@ then
         if [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]]
         then
       
-            cp $TMPFOLDER/mep-git.sh $DESTSCRIPT/$SCRIPT
+            cp $TMPFOLDER/$SCRIPT $DESTSCRIPT/$SCRIPT
             echo -e "\nUpdate finished. Can we delete folder $TMPFOLDER ? [Y/n]"
             read GOGO
 
@@ -252,7 +260,7 @@ then
       if [[ `env x='() { :;}; echo vulnerable' bash -c "echo this is a test" 2>/dev/null` == *vulnerable* ]]
       then
          apt-get --force-yes --yes install bash
-         log_daemon_msg "Bash issue fix"
+         log_daemon_msg "Bash issue fixed"
          log_end_msg 0
       else
          log_daemon_msg "Bash issue is already fixed"
@@ -261,6 +269,13 @@ then
    
    fi
    
+   ## ddosCheck
+   if [[ $UPPDT == *6* ]]; then
+      cp $TMPFOLDER/ddosCheck.bash /root/
+      log_daemon_msg "ddosCheck.bash deployed in /root"
+      log_end_msg 0
+   fi
+
    #####
 
    echo -e "\nSetup complete. Can we delete the temp folder $TMPFOLDER ? [Y/n]"
