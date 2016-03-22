@@ -37,7 +37,7 @@ fi
 clear
 echo -e "Warning ! This script is for Debian and Ubuntu."
 echo -e "Do you want to continue ? [y/N]"
-read GOGO
+read -r GOGO
 echo
 
 if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
@@ -54,7 +54,7 @@ then
 6 - ddosCheck script (you'll had to conf and add it in cron)\n \
 all - Do all \
     "
-    read UPDT
+    read -r UPDT
     echo
    
     # If nothing or all
@@ -67,7 +67,7 @@ all - Do all \
    
         echo -e "What you'll do on this server ? [1]"
         echo -e "1 - .vimrc normal\n2 - .vimrc python"
-        read VIMRC
+        read -r VIMRC
       
     fi
    
@@ -82,7 +82,7 @@ all - Do all \
 
         # Delete the temp folder if it already exists.
         echo -e "\nThis folder already exists. Delete $TMPFOLDER ? [y/N]"
-        read GOGO
+        read -r GOGO
 
         if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
         then
@@ -116,7 +116,7 @@ all - Do all \
    
         echo
         echo "Error ... Try with SSH (server SSH key must be on your GitHub account) ? [y/N]"
-        read GOGO
+        read -r GOGO
       
         if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
         then
@@ -137,14 +137,14 @@ all - Do all \
     then
 
         echo -e "An update of this script is available. Update it ? [Y/n]"
-        read GOGO
+        read -r GOGO
        
         if [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]]
         then
       
             cp $TMPFOLDER/$SCRIPT $DESTSCRIPT/$SCRIPT
             echo -e "\nUpdate finished. Can we delete folder $TMPFOLDER ? [Y/n]"
-            read GOGO
+            read -r GOGO
 
             [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]] && rm -rf $TMPFOLDER
    
@@ -279,7 +279,7 @@ all - Do all \
    #####
 
    echo -e "\nSetup complete. Can we delete the temp folder $TMPFOLDER ? [Y/n]"
-   read GOGO
+   read -r GOGO
 
    [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]] && rm -rf $TMPFOLDER
    
