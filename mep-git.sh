@@ -45,17 +45,23 @@ then
 
     # What to do ? You can use 0 to 9, a to z and A to Z.
     echo -e "What to setup or update ? [all]"
-    echo -e "\
- 1 - .bashrc for all users\n \
-2 - .vimrc for all users\n \
-3 - atop monitoring (edit /etc/init.d/atop after\n \
-4 - Login banner (you can edit /etc/issue.net)\n \
-5 - Bash issue fix\n \
-6 - ddosCheck script (you'll had to conf and add it in cron)\n \
-all - Do all \
-    "
-    read -r UPDT
-    echo
+         select functions in ".bashrc for all users" ".vimrc for all users" "atop monitoring (edit /etc/init.d/atop after)" "Login banner (you can edit /etc/issue.net after)" "all" ; do
+     case $functions in
+        .bashrc for all user ) UPDT=1 
+                     break ;;
+        .virmrc for all user ) UPDT=2 
+                      break ;;
+        atop monitoring (edit /etc/init.d/atop after) ) UPDT=3 
+                      break ;;
+        Login banner (you can edit /etc/issue.net after) ) UPDT=4
+                      break ;;
+        Bash Issue fix ) UPTD=5 break ;;
+        
+        ddosCheck script (you'll had to conf and add it in cron) ) UPDT=6 break ;;
+        
+        all ) UPDT=all break ;;
+    esac
+ done
    
     # If nothing or all
     [[ -z $UPDT ]] || [ $UPDT == "all" ] && UPDT="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -66,8 +72,16 @@ all - Do all \
     then
    
         echo -e "What you'll do on this server ? [1]"
-        echo -e "1 - .vimrc normal\n2 - .vimrc python"
         read -r VIMRC
+             select functions in ".vimrc normal" ".virmrc phyton"; do
+     case $functions in
+        .vimrc normal ) VIMRC=1 
+                     break ;;
+        .vimrc phyton ) VIMRC=2 
+                      break ;;
+    esac
+ done
+ 
       
     fi
    
