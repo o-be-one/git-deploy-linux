@@ -38,9 +38,7 @@ outiprelated() { # allow this server to only answer to requests from defined ips
 }
 
 ######
-#
 # Define your rules !
-#
 ######
 
 inip 8.33.12.224 # allow this ip to contact the server
