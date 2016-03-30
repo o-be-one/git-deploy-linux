@@ -10,25 +10,27 @@
 # Flush existing rules
 iptables -F
 
-# Set up default DROP rule for venet0
+# Set up default DROP rule for eth0
 iptables -P OUTPUT DROP
 iptables -P INPUT DROP
 
 # Allow existing connections to continue
-iptables -A INPUT -i venet0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -i eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-inip() {
-    iptables -A INPUT -i venet0 -s $1 -j ACCEPT
+# Allow remote ip to contact the server
+
+inip() { # allow remote ip to contact this server
+    iptables -A INPUT -i eth0 -s $1 -j ACCEPT
 }
 
 # Allow this host to connect defined remote ip
 
 outip() { # allow this server to send requests to defined ip
-    iptables -A OUTPUT -o venet0 -d $1 -j ACCEPT
+    iptables -A OUTPUT -o eth0 -d $1 -j ACCEPT
 }
 
 outiprelated() { # allow this server to only answer to requests from defined ips
-    iptables -A OUTPUT -o venet0 -d $1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables -A OUTPUT -o eth0 -d $1 -m state --state ESTABLISHED,RELATED -j ACCEPT
 }
 
 ######
