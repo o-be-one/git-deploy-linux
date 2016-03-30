@@ -21,8 +21,6 @@ iptables -t filter -A OUTPUT -o lo -j ACCEPT
 echo "[IMPORTANT] Autorisation de la machine a aller sur internet : OK"
 iptables -t filter -A OUTPUT -o eth0 -m state ! --state INVALID -j ACCEPT
 iptables -t filter -A INPUT -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -t filter -A OUTPUT -o vmbr0 -m state ! --state INVALID -j ACCEPT
-iptables -t filter -A INPUT -i vmbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 echo "Réponse aux requêtes de PING : OK"
 iptables -A INPUT -p icmp -j ACCEPT
