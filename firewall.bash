@@ -38,6 +38,14 @@ iptables -A INPUT -i eth0 -p $1 -s $2 --dport $3 -m state ! --state INVALID -j A
 
 echo "Mise en place des autres règles : OK"
 
+#########
+# Define the following
+#########
+
+openp tcp 80 # open the port TCP 80 (http)
+openp udp 27015 # open the port UDP 27015 (CS:GO for example)
+openip tcp 88.167.18.222 3306 # open the port TCP 3306 for the ip 88.167.18.222 (mysql)
+
 echo "Affichage des règles initialisés :"
 iptables -L
 
