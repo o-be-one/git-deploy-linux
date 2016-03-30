@@ -14,12 +14,13 @@ DATE=$(date +'%y-%m-%d') # date format for saved files
 BACKUPFOLDER="/backups/mysql" # where to keep backups ?
 DBTOBACKUP="awesomedb mybestdb" # name of dbs to backup (separated by space)
 MAXDAYS="14" # how mutch days we have to keep backups ?
+USER="my_backup_user" # user to use to backup your dbs
 PASSWD="MySQL_P@sSW0rD" # mysql password with read access to db you want to backup
 
 ## Edit following at your own risk /!\
 
 echo "MySQL backup in progress ..."
-
+ro
 # fix $MAXDAYS number to fit with find
 MAXDAYS=$(($MAXDAYS -1))
 
@@ -31,7 +32,7 @@ for i in $DBTOBACKUP; do
     
     # make folder (no problem if it exists), dump db, compess db
     /bin/mkdir -p $BACKUPFOLDER/$i
-    /usr/bin/mysqldump -u root -p$PASSWD $i > $BACKUPFOLDER/$i/${i}_$DATE.sql
+    /usr/bin/mysqldump -u $USER -p$PASSWD $i > $BACKUPFOLDER/$i/${i}_$DATE.sql
     /bin/gzip $BACKUPFOLDER/$i/${i}_$DATE.sql
 
     # delete all found files after $MAXDAY
