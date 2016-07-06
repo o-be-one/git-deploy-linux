@@ -45,23 +45,17 @@ then
 
     # What to do ? You can use 0 to 9, a to z and A to Z.
     echo -e "What to setup or update ? [all]"
-    select UPDT in ".bashrc for all users" ".vimrc for all users" "atop monitoring (edit /etc/init.d/atop after)" "Login banner (you can edit /etc/issue.net after)" "all" ; do
-    case $UPDT in
-        ".bashrc for all users" ) UPDT=1 break ;;
-        
-        ".virmrc for all users" ) UPDT=2 break ;;
-        
-        "atop monitoring (edit /etc/init.d/atop after)" ) UPDT=3 break ;;
-        
-        "Login banner (you can edit /etc/issue.net after)" ) UPDT=4 break ;;
-        
-        "Bash Issue fix" ) UPTD=5 break ;;
-        
-        "ddosCheck script (you ll had to conf and add it in cron)" ) UPDT=6 break ;;
-        
-        "all" ) UPDT=all break ;;
-    esac
- done
+    echo -e "\
+ 1 - .bashrc for all users\n \
+2 - .vimrc for all users\n \
+3 - atop monitoring (edit /etc/init.d/atop after\n \
+4 - Login banner (you can edit /etc/issue.net)\n \
+5 - Bash issue fix\n \
+6 - ddosCheck script (you'll had to conf and add it in cron)\n \
+all - Do all \
+    "
+    read -r UPDT
+    echo
    
     # If nothing or all
     [[ -z $UPDT ]] || [ $UPDT == "all" ] && UPDT="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -72,15 +66,8 @@ then
     then
    
         echo -e "What you'll do on this server ? [1]"
-             select VIMRC in ".vimrc normal" ".virmrc phyton"; do
-     case $VIMRC in
-        ".vimrc normal" ) VIMRC=1
-                     break ;;
-        ".vimrc phyton" ) VIMRC=2
-                      break ;;
-    esac
- done
- 
+        echo -e "1 - .vimrc normal\n2 - .vimrc python"
+        read -r VIMRC
       
     fi
    
@@ -88,23 +75,32 @@ then
    
     if [ ! -d $TMPFOLDER ]
     then
+
         mkdir -p $(dirname $TMPFOLDER)
     
     else
+
         # Delete the temp folder if it already exists.
         echo -e "\nThis folder already exists. Delete $TMPFOLDER ? [y/N]"
         read -r GOGO
+
         if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]
         then
+
             rm -rf $TMPFOLDER
+
         else
+
             echo
             log_daemon_msg "Maybe you need to edit this script ..."
             log_end_msg 1
             echo
             exit 1
+
         fi
+
     fi
+
     echo
     
     # Install git needed ?
@@ -128,6 +124,7 @@ then
             git clone $GITSSH $TMPFOLDER
       
         fi
+
     done
    
         echo
@@ -138,6 +135,7 @@ then
  
     if [ $comp_value -eq 1 ]
     then
+
         echo -e "An update of this script is available. Update it ? [Y/n]"
         read -r GOGO
        
@@ -147,6 +145,7 @@ then
             cp $TMPFOLDER/$SCRIPT $DESTSCRIPT/$SCRIPT
             echo -e "\nUpdate finished. Can we delete folder $TMPFOLDER ? [Y/n]"
             read -r GOGO
+
             [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]] && rm -rf $TMPFOLDER
    
             $DESTSCRIPT/$SCRIPT && exit 0
@@ -158,12 +157,14 @@ then
     ##### Where to deploy files ?
     ## .bashrc
    if [[ $UPDT == *1* ]]; then
+
       # bc is used by my bashrc header ...
       PKG_OK=$(dpkg-query -W --showformat='${Status}\n' bc|grep "install ok installed")
       if [ "" == "$PKG_OK" ]; then
          log_warning_msg "bc isn't installed. Starting installation ..."
          apt-get --force-yes --yes install bc
       fi
+
       cp $TMPFOLDER/.bashrc /etc/skel
       cp $TMPFOLDER/.bashrc /root/
       for i in `ls /home/`; do cp $TMPFOLDER/.bashrc /home/$i; done
@@ -171,6 +172,7 @@ then
       log_daemon_msg "bashrc update"
       log_end_msg 0
    fi
+
     ## .vimrc
    if [[ $UPDT == *2* ]]; then
       
@@ -222,11 +224,13 @@ then
          cp $TMPFOLDER/.vimrc /etc/skel
          cp $TMPFOLDER/.vimrc /root/
          for i in `ls /home/`; do cp $TMPFOLDER/.vimrc /home/$i; done
+
       fi
       
       log_daemon_msg "vimrc update"
       log_end_msg 0
    fi
+
    ## atop
    # is atop installed ? If not, install it.
    if [[ $UPDT == *3* ]]; then
@@ -271,17 +275,23 @@ then
       log_daemon_msg "ddosCheck.bash deployed in /root"
       log_end_msg 0
    fi
+
    #####
+
    echo -e "\nSetup complete. Can we delete the temp folder $TMPFOLDER ? [Y/n]"
    read -r GOGO
+
    [[ ! $GOGO =~ ^([nN][oO]|[nN])$ ]] && rm -rf $TMPFOLDER
    
    log_daemon_msg "System is deployed. See ya !"
    log_end_msg 0
    echo
    exit 0
+
 else
+
    log_warning_msg "Nothing changed. Bye !"
    echo
    exit 0
+
 fi
