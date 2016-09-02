@@ -20,7 +20,7 @@ PASSWD="MySQL_P@sSW0rD" # mysql password with read access to db you want to back
 ## Edit following at your own risk /!\
 
 echo "MySQL backup in progress ..."
-ro
+
 # fix $MAXDAYS number to fit with find
 MAXDAYS=$(($MAXDAYS -1))
 
