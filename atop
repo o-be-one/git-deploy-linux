@@ -1,10 +1,9 @@
 # atop logrotate configuration file
 
-/var/log/atop/*.log {
+/var/log/atop/atop_???????? {
     rotate 30
     daily
     compress
-    dateext
     olddir /var/log/atop
     nocreate
     missingok
