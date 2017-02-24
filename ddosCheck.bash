@@ -91,7 +91,7 @@ if ! command -v tcpdump >/dev/null 2>&1; then
 	echo "Do you want to install it ? (works only with apt-get package manager) [Y/n]"
 	read -r YESNO
 
-	if [[ $GOGO =~ ^([yY][eE][sS]|[yY])$ ]]; then
+	if [[ $YESNO =~ ^([yY][eE][sS]|[yY])$ ]]; then
         	apt-get --force-yes --yes install tcpdump
 	else
 		msg_crit no-tcpdump
