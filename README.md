@@ -42,8 +42,6 @@ _issue.net_ is just your login banner to warn user about their access.
 
 _ddosCheck.bash_ is a script to check if your server is under DDoS. The file just try to ping some ip or urls and if it meets the script configuration it considers there's a DDoS and start a tcpdump. This file will be really usefull for OVH VAC/DDoS team ! You'll have to add it in your crontab, each minutes will do the job perfectly.
 
-__Variant :__ centos_ddosCheck.bash for CentOS servers.
-
 ### blacksync.bash
 
 _blacksync.bash_ is an easy way to share your iptables script from a host to all your other hosts (named like this cause i use it for my iptables blacklists).
