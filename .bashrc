@@ -15,8 +15,8 @@ HISTSIZE=10000
 # History timestamp
 HISTTIMEFORMAT="%Y-%m-%d @ %T - "
 # Load caracter encoding
-#export LC_ALL="fr_FR.UTF-8"
-#export LANG="$LC_ALL"
+export LC_ALL="fr_FR.UTF-8"
+export LANG="$LC_ALL"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -46,7 +46,53 @@ black='\e[0;30m'
 WHITE='\e[1;37m'
 NC='\e[0m'
 
-echo ""
+spin ()
+{
+echo -ne "${RED}-"
+echo -ne "${WHITE}\b|"
+echo -ne "${BLUE}\bx"
+echo -ne "${RED}\b+${NC}"
+}
+
+#function my_ip() # Get IP adress on ethernet.
+#{
+#    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
+#      sed -e s/addr://)
+#    echo ${MY_IP:-"Not connected"}
+#}
+
+clear
+cores=$(grep -c ^processor /proc/cpuinfo 2>/dev/null)
+[ "$cores" -eq "0" ] && cores=1
+threshold="${cores:-1}.0"
+if [ $(echo "`cut -f1 -d ' ' /proc/loadavg` < $threshold" | bc) -eq 1 ]; then
+
+    for i in `seq 1 15` ; do spin; done ;echo -ne "${WHITE} ! Serveur r0x.fr (${PURPLE}${HOSTNAME%%.*}${WHITE}) ! ${NC}"; for i in `seq 1 15` ; do spin; done ;echo -e "\n";
+    echo -e "${BLUE}Linux : "`cat /etc/issue | grep Debian | awk '{print $1,$2,$3}'` ;
+    echo -e "Kernel : "`uname -smr`; echo "";
+    echo -ne "Votre dernier login :\n  ${YELLOW}`lastlog | grep $USER | awk '{print $4" "$6" "$5" "$9}'`${BLUE},${YELLOW} `lastlog | grep $USER | awk '{print $7}'`\n  ${YELLOW}`lastlog | grep $USER | awk '{print $3}'`${BLUE}\n";
+    echo -ne "\nBienvenue ${RED}$USER${BLUE}, nous sommes le "; date  +%A" "%d" "%B" et il est "%H"h"%M"."; echo "";
+    echo -ne "${BLUE}Serveur en ligne depuis ";uptime | awk /'up/ {gsub(",",""); print $3,"jours."}'; echo "";
+#   echo -ne "Load : "; cat /proc/loadavg | awk '{print $1,$2,$3}';
+#   echo -ne "${BLUE}Adresse IP locale : "; my_ip; echo "";
+    echo -ne "Informations techniques : ${YELLOW}\n";
+    /usr/bin/landscape-sysinfo | head -n -2; echo -ne "${NC}";
+    if [ -x /usr/lib/update-notifier/update-motd-updates-available ]; then
+        /usr/lib/update-notifier/update-motd-updates-available | head -n -1;
+    fi
+    if [ -x /usr/lib/ubuntu-release-upgrader/release-upgrade-motd ]; then
+        /usr/lib/ubuntu-release-upgrader/release-upgrade-motd;
+    fi
+    if [ -x /usr/lib/update-notifier/update-motd-reboot-required ]; then
+        /usr/lib/update-notifier/update-motd-reboot-required;
+    fi
+    for i in `seq 1 15` ; do spin; done ;echo -ne "${WHITE} http://r0x.fr/ ${NC}"; for i in `seq 1 15` ; do spin; done ;echo "";
+    
+    else
+    echo
+    echo " System information disabled due to load higher than $threshold"
+fi
+echo ""; echo ""
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -80,9 +126,9 @@ fi
 # Promp design
 if [ "$color_prompt" = yes ]; then
     if [[ ${USER} != "root" ]]; then
-        export PS1="[\t] ${debian_chroot:+($debian_chroot)}\[${GREEN}\]\u\[${NC}\]@\[${GREEN}\]$(hostname -f|sed 's/\.tracktik\.com\.localdomain//')\[${NC}\]:\[${BLUE}\]\w\[${NC}\]\\$ "
+        export PS1="[\t] ${debian_chroot:+($debian_chroot)}\[${GREEN}\]\u\[${NC}\]@\[${GREEN}\]\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\]\\$ "
     else
-        export PS1="[\t] ${debian_chroot:+($debian_chroot)}\[${RED}\]\u\[${NC}\]@\[${RED}\]$(hostname -f|sed 's/\.tracktik\.com\.localdomain//')\[${NC}\]:\[${BLUE}\]\w\[${NC}\]\\$ "
+        export PS1="[\t] ${debian_chroot:+($debian_chroot)}\[${RED}\]\u\[${NC}\]@\[${RED}\]\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\]\\$ "
     fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -120,8 +166,8 @@ alias clean='sudo apt-get autoclean && sudo apt-get autoremove && sudo deborphan
 alias reboot=' reboot'
 alias halt=' halt'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
+# Add an "alert" alias for long running commands.  Use like so:                 
+#   sleep 10; alert                                                             
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
@@ -141,5 +187,4 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 toilet --gay --font future ${HOSTNAME%%.*}
-[[ ${USER} == "root" ]] && echo -e "Care, you are now ${RED}root${NC}!"
 echo
