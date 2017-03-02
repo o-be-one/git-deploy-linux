@@ -185,3 +185,6 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+toilet --gay --font future ${HOSTNAME%%.*}
+echo
