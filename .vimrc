@@ -6,3 +6,4 @@ set shiftwidth=4
 set expandtab
 set paste
 set ruler
+set modeline
