@@ -76,6 +76,7 @@ msg_ok() {
 		vimrc) OKMSG="$OKMSG .vimrc deployed to whole system.";;
 		atop) OKMSG="$OKMSG setup of atop donee";;
 		loginbaner) OKMSG="$OKMSG setup of login banner done.";;
+		updates) OKMSG="$OKMSG Updates installed.";;
 		*) OKMSG="$OKMSG ${@:1}";;
 
 	esac
@@ -109,6 +110,7 @@ cat <<EOF
     3- install atop
     4- push the login banner
     5- update bash and ssh
+    6- change hostname
     all- do everything
     0- exit
 EOF
@@ -347,12 +349,41 @@ do_secupdates() {
 
 }
 
+change_hostname() {
+
+	local now=$(date +%y%m%d%k%M)
+
+	echo "What will be the new hostname of the server?"
+	read -r newhostname
+
+	if echo $newhostname | grep -qP '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'; then
+
+		# change /etc/hostname
+		cp /etc/hostname /etc/hostname.$now
+		echo "$newhostname" > /etc/hostname
+
+		# edit /etc/hosts
+		# for ipv4
+		cp /etc/hosts /etc/hosts.$now
+		sed -i "/127.0.0.1/c\127.0.0.1	$newhostname localhost" /etc/hosts
+
+		hostname $newhostname
+
+		msg_ok "New hostname set: $newhostname"
+
+	else
+		msg_crit "Hostname is not valid: $newhostname"
+	fi
+
+}
+
 # call function for each selection (don't name a function like a command ...)
 [[ $SELECTION == *1* ]] && setup_bashrc
 [[ $SELECTION == *2* ]] && setup_vimrc
 [[ $SELECTION == *3* ]] && setup_atop
 [[ $SELECTION == *4* ]] && setup_loginbanner
 [[ $SELECTION == *5* ]] && do_secupdates
+[[ $SELECTION == *6* ]] && change_hostname
 
 rm -rf $TMPFOLDER
 
