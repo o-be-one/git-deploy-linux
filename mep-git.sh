@@ -4,6 +4,15 @@
 #
 # Author: o_be_one for r0x.fr
 # Goal: deploy things in a Linux system
+#
+# What we can do:
+#    1- push .bashrc to all users
+#    2- push .vimrc to all users
+#    3- install atop
+#    4- push the login banner
+#    5- update bash and ssh
+#    6- change hostname
+#
 # Error codes :
 #		0: done
 #		1: missing argument
