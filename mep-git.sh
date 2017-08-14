@@ -346,7 +346,7 @@ setup_loginbanner() {
 	# intented to use with Ubuntu
 	#echo -e "#! /bin/bash" > /etc/update-motd.d/05-motd-banner
 	#echo "echo" >> /etc/update-motd.d/05-motd-banner
-	#echo "toilet -o --gay -f big TRACKTIK" >> /etc/update-motd.d/05-motd-banner
+	#echo "toilet -o --gay -f big R0X.FR" >> /etc/update-motd.d/05-motd-banner
 	#chmod +x /etc/update-motd.d/05-motd-banner
 
 	msg_ok "loginbanner"
