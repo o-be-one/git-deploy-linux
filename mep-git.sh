@@ -375,7 +375,7 @@ change_fqdn() {
 	if echo $newfqdn | grep -qP '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'; then
 
 		# define hostname from fqdn
-		newhostname=echo $newfqdn | cut -d"." -f1
+		newhostname=$(echo $newfqdn | cut -d"." -f1)
 
 		# change /etc/hostname
 		cp /etc/hostname /etc/hostname.$now
