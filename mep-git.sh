@@ -119,7 +119,7 @@ cat <<EOF
     3- install atop
     4- push the login banner
     5- update bash and ssh
-    6- change hostname
+    6- change hostname and fqdn
     all- do everything
     0- exit
 EOF
@@ -365,14 +365,17 @@ do_secupdates() {
 
 }
 
-change_hostname() {
+change_fqdn() {
 
 	local now=$(date +%y%m%d%k%M)
 
-	echo "What will be the new hostname of the server?"
-	read -r newhostname
+	echo "What will be the new hostname FQDN of the server?"
+	read -r newfqdn
 
-	if echo $newhostname | grep -qP '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'; then
+	if echo $newfqdn | grep -qP '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'; then
+
+		# define hostname from fqdn
+		newhostname=echo $newfqdn | cut -d"." -f1
 
 		# change /etc/hostname
 		cp /etc/hostname /etc/hostname.$now
@@ -381,14 +384,14 @@ change_hostname() {
 		# edit /etc/hosts
 		# for ipv4
 		cp /etc/hosts /etc/hosts.$now
-		sed -i "/127.0.0.1/c\127.0.0.1	$newhostname localhost" /etc/hosts
+		sed -i "/127.0.0.1/c\127.0.0.1	$newfqdn $newhostname localhost" /etc/hosts
 
 		hostname $newhostname
 
-		msg_ok "New hostname set: $newhostname"
+		msg_ok "New fqdn set [${newfqdn}] with hostname [${newhostname}]"
 
 	else
-		msg_crit "Hostname is not valid: $newhostname"
+		msg_crit "Hostname is not valid: $newfqdn"
 	fi
 
 }
@@ -399,7 +402,7 @@ change_hostname() {
 [[ $SELECTION == *3* ]] && setup_atop
 [[ $SELECTION == *4* ]] && setup_loginbanner
 [[ $SELECTION == *5* ]] && do_secupdates
-[[ $SELECTION == *6* ]] && change_hostname
+[[ $SELECTION == *6* ]] && change_fqdn
 
 rm -rf $TMPFOLDER
 
